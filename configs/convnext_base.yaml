@@ -1,0 +1,59 @@
+seed: 42
+
+dataset:
+  data_root: "d:\\prakhar ipa\\my dataset\\fish4konwledge"
+  num_classes: 23
+  split:
+    train: 0.70
+    val: 0.15
+    test: 0.15
+  group_key: trajectory_id
+
+model:
+  name: convnext_base
+  pretrained: true
+  num_classes: 23
+  dropout: 0.2
+
+image:
+  size: 288
+
+training:
+  epochs: 50
+  batch_size: 16
+  gradient_accumulation: 2
+  optimizer: adamw
+  lr: 1.0e-4
+  weight_decay: 1.0e-4
+  warmup_epochs: 3
+  scheduler: cosine
+  label_smoothing: 0.1
+  amp: true
+  ema: true
+  ema_decay: 0.9998
+
+loss:
+  type: class_balanced
+  beta: 0.9999
+  gamma: 2.0
+
+imbalance:
+  method: class_balanced
+  use_sampler: true
+
+augmentation:
+  horizontal_flip: 0.5
+  rotation: 15
+  color_jitter: true
+  underwater_aug: true
+  mixup_prob: 0.15
+  cutmix_prob: 0.15
+
+early_stopping:
+  monitor: macro_f1
+  patience: 8
+
+dataloader:
+  num_workers: 4
+  pin_memory: true
+  persistent_workers: true
